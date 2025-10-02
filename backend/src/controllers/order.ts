@@ -296,6 +296,7 @@ export const createOrder = async (
 
         items.forEach((id: Types.ObjectId) => {
             const product = products.find((p) => p._id.equals(id))
+            
             if (!product) {
                 throw new BadRequestError(`Товар с id ${id} не найден`)
             }

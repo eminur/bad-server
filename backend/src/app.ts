@@ -1,6 +1,7 @@
 import { errors } from 'celebrate'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import rateLimit from 'express-rate-limit';
 import 'dotenv/config'
 import express, { json, urlencoded } from 'express'
 import mongoose from 'mongoose'
@@ -9,16 +10,16 @@ import { DB_ADDRESS, ORIGIN_ALLOW } from './config'
 import errorHandler from './middlewares/error-handler'
 import serveStatic from './middlewares/serverStatic'
 import routes from './routes'
-import rateLimit from 'express-rate-limit';
+
 
 const { PORT = 3000 } = process.env
 const app = express()
 
 const apiLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 минута
-  max: 20, // максимум 20 запросов с одного IP
-  standardHeaders: true, // добавляет заголовки RateLimit
-  legacyHeaders: false,  // отключает `X-RateLimit-*`
+  windowMs: 1 * 60 * 1000, 
+  max: 20, 
+  standardHeaders: true, 
+  legacyHeaders: false, 
   message: 'Слишком много запросов, попробуйте позже.',
 });
 
@@ -28,7 +29,7 @@ app.use(cookieParser())
 
 //app.use(cors())
 app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }))
-// app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(serveStatic(path.join(__dirname, 'public')))
 

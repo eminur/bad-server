@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { constants } from 'http2'
 import sharp from 'sharp'
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'crypto'
+import path from 'path'
 import BadRequestError from '../errors/bad-request-error'
-import path from 'path';
-import fs from 'fs';
+
 
 export const uploadFile = async (
     req: Request,

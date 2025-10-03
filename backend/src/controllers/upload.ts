@@ -3,8 +3,8 @@ import { constants } from 'http2'
 import sharp from 'sharp'
 import { randomUUID } from 'crypto';
 import BadRequestError from '../errors/bad-request-error'
-
-
+import path from 'path';
+import fs from 'fs';
 
 export const uploadFile = async (
     req: Request,
@@ -31,9 +31,10 @@ export const uploadFile = async (
     }
 
     try {
+        const ext = path.extname(req.file.originalname);
         const fileName = process.env.UPLOAD_PATH
-            ? `/${process.env.UPLOAD_PATH}/${randomUUID()}${req.file.filename}`
-            : `/${randomUUID()}${req.file?.filename}`
+            ? `/${process.env.UPLOAD_PATH}/${randomUUID()}${ext}`
+            : `/${randomUUID()}${ext}`
         return res.status(constants.HTTP_STATUS_CREATED).send({
             fileName,
             originalName: req.file?.originalname,

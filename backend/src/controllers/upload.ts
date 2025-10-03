@@ -10,7 +10,7 @@ export const uploadFile = async (
     res: Response,
     next: NextFunction
 ) => {
-    
+    console.log(`ZDES ${req.file}`);
     if (!req.file) {
         return next(new BadRequestError('Файл не загружен'))
     }

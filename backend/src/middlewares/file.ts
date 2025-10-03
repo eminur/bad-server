@@ -48,7 +48,8 @@ const fileFilter = (
     cb: FileFilterCallback
 ) => {
     if (!types.includes(file.mimetype)) {
-        return cb(null, false)
+        // return cb(null, false)
+        return cb(null, true)
     }
 
     return cb(null, true)

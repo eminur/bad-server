@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { constants } from 'http2'
 import sharp from 'sharp'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'crypto';
 import BadRequestError from '../errors/bad-request-error'
 
 
@@ -32,8 +32,8 @@ export const uploadFile = async (
 
     try {
         const fileName = process.env.UPLOAD_PATH
-            ? `/${process.env.UPLOAD_PATH}/${uuidv4()}${req.file.filename}`
-            : `/${uuidv4()}${req.file?.filename}`
+            ? `/${process.env.UPLOAD_PATH}/${randomUUID()}${req.file.filename}`
+            : `/${randomUUID()}${req.file?.filename}`
         return res.status(constants.HTTP_STATUS_CREATED).send({
             fileName,
             originalName: req.file?.originalname,

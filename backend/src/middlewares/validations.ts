@@ -1,4 +1,4 @@
-import { Joi, celebrate } from 'celebrate'
+import { Joi, Segments, celebrate } from 'celebrate'
 import { Types } from 'mongoose'
 
 // eslint-disable-next-line no-useless-escape
@@ -133,3 +133,19 @@ export const validateAuthentication = celebrate({
         }),
     }),
 })
+
+//Валидация избыточной аггрегации
+export const validateOrderQuery = celebrate({
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer(),
+    limit: Joi.number().integer(),
+    sortField: Joi.string().valid('createdAt', 'orderNumber', 'totalAmount'),
+    sortOrder: Joi.string().valid('asc', 'desc'),
+    status: Joi.string(), //Важно: запрещаем вложенные объекты
+    totalAmountFrom: Joi.number(),
+    totalAmountTo: Joi.number(),
+    orderDateFrom: Joi.date(),
+    orderDateTo: Joi.date(),
+    search: Joi.string(),
+  }),
+});

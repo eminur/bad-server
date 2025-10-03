@@ -11,6 +11,7 @@ export const uploadFile = async (
     res: Response,
     next: NextFunction
 ) => {
+    
     if (!req.file) {
         return next(new BadRequestError('Файл не загружен'))
     }
@@ -23,7 +24,7 @@ export const uploadFile = async (
 
     // Проверка, действительно ли это изображение
     try {
-        await sharp(req.file.buffer).metadata() // выбросит ошибку, если не изображение
+        await sharp(req.file.path).metadata() // выбросит ошибку, если не изображение
     } catch {
         return res
             .status(400)

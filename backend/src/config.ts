@@ -22,3 +22,6 @@ export const REFRESH_TOKEN = {
         } as CookieOptions,
     },
 }
+export const { ORIGIN_ALLOW ='http://localhost:5173' } = process.env
+export const {UPLOAD_PATH = 'images'} = process.env
+export const {UPLOAD_PATH_TEMP ='temp'} = process.env

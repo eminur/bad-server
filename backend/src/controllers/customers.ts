@@ -3,6 +3,7 @@ import { FilterQuery } from 'mongoose'
 import NotFoundError from '../errors/not-found-error'
 import Order from '../models/order'
 import User, { IUser } from '../models/user'
+import  escapeRegExp from '../utils/escapeRegExp'
 
 // TODO: Добавить guard admin
 // eslint-disable-next-line max-len
@@ -13,9 +14,9 @@ export const getCustomers = async (
     next: NextFunction
 ) => {
     try {
+        const limit = Math.min(Number(req.query.limit) || 10, 10);
         const {
             page = 1,
-            limit = 10,
             sortField = 'createdAt',
             sortOrder = 'desc',
             registrationDateFrom,
@@ -92,7 +93,8 @@ export const getCustomers = async (
         }
 
         if (search) {
-            const searchRegex = new RegExp(search as string, 'i')
+            const safeSearch = escapeRegExp(search as string);
+            const searchRegex = new RegExp(safeSearch, 'i');
             const orders = await Order.find(
                 {
                     $or: [{ deliveryAddress: searchRegex }],

@@ -1,7 +1,7 @@
 services:
   frontend:
     build:
-      context: frontend
+      context: ./frontend
     env_file:
       - frontend/.env
     volumes:
@@ -23,12 +23,12 @@ services:
   backend:
     restart: always
     build:
-      context: backend
+      context: ./backend
     env_file:
       - backend/.env
     volumes:
       - ./backend/src:/app/src
-      - public:/app/src/public
+      - ./backend/src/public:/app/src/public
     ports:
       - 3000:3000
     networks:

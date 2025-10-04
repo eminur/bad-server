@@ -15,9 +15,10 @@ export const getOrders = async (
     next: NextFunction
 ) => {
     try {
+        const limit = Math.min(Number(req.query.limit) || 10, 10);
+        
         const {
             page = 1,
-            limit = 10,
             sortField = 'createdAt',
             sortOrder = 'desc',
             status,
@@ -27,9 +28,9 @@ export const getOrders = async (
             orderDateTo,
             search,
         } = req.query
-
+        
         const filters: FilterQuery<Partial<IOrder>> = {}
-
+        
         if (status) {
             if (typeof status === 'object') {
                 Object.assign(filters, status)
@@ -293,9 +294,12 @@ export const createOrder = async (
         const userId = res.locals.user._id
         const { address, payment, phone, total, email, items, comment } =
             req.body
+        
+        const sanitizedComment = comment.replace(/<[^>]*>?/gm, '');
 
         items.forEach((id: Types.ObjectId) => {
             const product = products.find((p) => p._id.equals(id))
+            
             if (!product) {
                 throw new BadRequestError(`Товар с id ${id} не найден`)
             }
@@ -315,7 +319,7 @@ export const createOrder = async (
             payment,
             phone,
             email,
-            comment,
+            sanitizedComment,
             customer: userId,
             deliveryAddress: address,
         })

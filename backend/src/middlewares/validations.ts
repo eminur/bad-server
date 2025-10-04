@@ -1,8 +1,12 @@
-import { Joi, celebrate } from 'celebrate'
+import { Joi, Segments, celebrate } from 'celebrate'
 import { Types } from 'mongoose'
 
+
+/*
 // eslint-disable-next-line no-useless-escape
 export const phoneRegExp = /^(\+\d+)?(?:\s|-?|\(?\d+\)?)+$/
+*/
+export const phoneRegExp = /^\+?[0-9\s\-()]{10,20}$/
 
 export enum PaymentType {
     Card = 'card',
@@ -133,3 +137,18 @@ export const validateAuthentication = celebrate({
         }),
     }),
 })
+
+export const validateOrderQuery = celebrate({
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer(),
+    limit: Joi.number().integer(),
+    sortField: Joi.string().valid('createdAt', 'orderNumber', 'totalAmount'),
+    sortOrder: Joi.string().valid('asc', 'desc'),
+    status: Joi.string(),
+    totalAmountFrom: Joi.number(),
+    totalAmountTo: Joi.number(),
+    orderDateFrom: Joi.date(),
+    orderDateTo: Joi.date(),
+    search: Joi.string(),
+  }),
+});
